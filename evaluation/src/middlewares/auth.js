@@ -16,3 +16,6 @@ function permission(permitted) {
         }
     }
 }
+
+
+module.exports = permission;

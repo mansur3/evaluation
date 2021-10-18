@@ -2,12 +2,15 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 function tokenVerify(token) {
-    return new Promise(function(reject, resolve) {
+    return new Promise(function(resolve, reject) {
        jwt.verify(token, process.env.KEY, function(err, user) {
         if(err) return reject(err);
-        return resolve(user);    
-       }) ;
-    }
+           
+
+        return resolve(user); 
+
+       });
+    })
 }
 
 async function authenticate(req, res, next) {
@@ -16,11 +19,17 @@ async function authenticate(req, res, next) {
 
 
     let token = bearerToken.split(" ")[1];
+    
 
-
-    let {user} = await tokenVerify(token);
-    req.user = user;
-    next();
+    try{
+        let {user} = await tokenVerify(token);
+   
+        req.user = user;
+        next();
+    } catch(e) {
+        return res.status(400).send("Something went wrong")
+    }
+    
 
 
 

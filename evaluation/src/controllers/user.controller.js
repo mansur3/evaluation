@@ -21,6 +21,7 @@ router.post("/register",upload.single("profile_pic") ,async (req, res) => {
     let userdata = await User.create({
         name : req.body.name,
         email : req.body.email,
+        password : req.body.password,
         profile_pic : req.file.path,
         roles : req.body.roles
     });
