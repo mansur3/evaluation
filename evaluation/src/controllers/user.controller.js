@@ -33,6 +33,23 @@ router.post("/register",upload.single("profile_pic") ,async (req, res) => {
 
 })
 
+router.post("/login", async (req, res) => {
+    let user = await User.findOne({email : req.body.email});
+    if(!user) return res.status("400").send({status : "falied", message : "User not found"});
+
+    let match = user.checkPassword(req.body.password);
+
+    if(!match) return res.status(400).send({status : "failed", message : "Your password is incorrect"});
+
+
+    let token = newToken(user);
+
+    return res.status(200).send({user, token});
+
+
+
+})
+
 
 
 
